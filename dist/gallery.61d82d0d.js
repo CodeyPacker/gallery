@@ -131,24 +131,36 @@ function Gallery(gallery) {
   var currentImage;
 
   function openModal() {
-    console.log('opened modal'); // first check if modal is already open
-
+    // first check if modal is already open
     if (modal.matches('.open')) {
       console.info('modal already open');
       return; // stop function from running
     }
 
-    modal.classList.add('open');
+    modal.classList.add('open'); // Event listeners to be bound when modal is opened
+
+    window.addEventListener('keyup', handleKeyUp);
+    nextButton.addEventListener('click', showNextImage);
   }
 
   function closeModal() {
     modal.classList.remove('open');
+    window.removeEventListener('keyup', handleKeyUp);
+    nextButton.removeEventListener('click', showNextImage);
   }
 
   function handleClickOutside(e) {
     if (e.target === e.currentTarget) {
       closeModal();
     }
+  }
+
+  function handleKeyUp(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+
+  function showNextImage() {
+    console.log(currentImage);
   }
 
   function showImage(el) {
@@ -159,7 +171,6 @@ function Gallery(gallery) {
     } // update the modal with this info
 
 
-    console.log(el);
     modal.querySelector('img').src = el.src;
     modal.querySelector('h2').textContent = el.title;
     modal.querySelector('figure p').textContent = el.dataset.description;
@@ -206,7 +217,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64176" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53550" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

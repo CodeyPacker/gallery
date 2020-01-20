@@ -11,7 +11,6 @@ function Gallery(gallery) {
   let currentImage;
 
   function openModal() {
-    console.log('opened modal');
     // first check if modal is already open
     if (modal.matches('.open')) {
       console.info('modal already open');
@@ -19,16 +18,31 @@ function Gallery(gallery) {
     }
 
     modal.classList.add('open');
+
+    // Event listeners to be bound when modal is opened
+    window.addEventListener('keyup', handleKeyUp);
+    nextButton.addEventListener('click', showNextImage);
   }
 
   function closeModal() {
     modal.classList.remove('open');
+    window.removeEventListener('keyup', handleKeyUp);
+    nextButton.removeEventListener('click', showNextImage);
   }
 
   function handleClickOutside(e) {
     if (e.target === e.currentTarget) {
       closeModal();
     }
+  }
+
+  function handleKeyUp(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+
+  function showNextImage() {
+    console.log(currentImage);
+
   }
 
   function showImage(el) {
@@ -38,7 +52,6 @@ function Gallery(gallery) {
     }
 
     // update the modal with this info
-    console.log(el);
     modal.querySelector('img').src = el.src;
     modal.querySelector('h2').textContent = el.title;
     modal.querySelector('figure p').textContent = el.dataset.description;
