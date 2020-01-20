@@ -118,7 +118,54 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"scripts/gallery.js":[function(require,module,exports) {
-console.log('test');
+function Gallery(gallery) {
+  if (!gallery) {
+    throw new Error('Gallery not found!');
+  } // select the elements we need
+
+
+  var images = Array.from(gallery.querySelectorAll('img'));
+  var modal = document.querySelector('.modal');
+  var prevButton = modal.querySelector('.prev');
+  var nextButton = modal.querySelector('.next');
+  var currentImage;
+
+  function openModal() {
+    console.log('opened modal'); // first check if modal is already open
+
+    if (modal.matches('.open')) {
+      console.info('modal already open');
+      return; // stop function from running
+    }
+
+    modal.classList.add('open');
+  }
+
+  function showImage(el) {
+    if (!el) {
+      // safety net
+      console.info('no image to show');
+      return;
+    } // update the modal with this info
+
+
+    console.log(el);
+    modal.querySelector('img').src = el.src;
+    modal.querySelector('h2').textContent = el.title;
+    modal.querySelector('figure p').textContent = el.dataset.description;
+    currentImage = el;
+    openModal();
+  }
+
+  images.forEach(function (image) {
+    return image.addEventListener('click', function (e) {
+      return showImage(e.currentTarget);
+    });
+  });
+}
+
+var gallery1 = Gallery(document.querySelector('.gallery1'));
+var gallery2 = Gallery(document.querySelector('.gallery2'));
 },{}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -147,7 +194,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61974" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64176" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
