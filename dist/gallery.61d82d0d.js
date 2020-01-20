@@ -133,7 +133,6 @@ function Gallery(gallery) {
   function openModal() {
     // first check if modal is already open
     if (modal.matches('.open')) {
-      console.info('modal already open');
       return; // stop function from running
     }
 
@@ -141,12 +140,15 @@ function Gallery(gallery) {
 
     window.addEventListener('keyup', handleKeyUp);
     nextButton.addEventListener('click', showNextImage);
+    prevButton.addEventListener('click', showPrevImage);
   }
 
   function closeModal() {
-    modal.classList.remove('open');
+    modal.classList.remove('open'); // cleanup listeners. these only need to exist when a modal is open
+
     window.removeEventListener('keyup', handleKeyUp);
     nextButton.removeEventListener('click', showNextImage);
+    prevButton.removeEventListener('click', showPrevImage);
   }
 
   function handleClickOutside(e) {
@@ -160,7 +162,12 @@ function Gallery(gallery) {
   }
 
   function showNextImage() {
-    console.log(currentImage);
+    // If there are no more images, go back to the first image
+    showImage(currentImage.nextElementSibling || gallery.firstElementChild);
+  }
+
+  function showPrevImage() {
+    showImage(currentImage.previousElementSibling || gallery.lastElementChild);
   }
 
   function showImage(el) {
