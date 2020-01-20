@@ -141,6 +141,16 @@ function Gallery(gallery) {
     modal.classList.add('open');
   }
 
+  function closeModal() {
+    modal.classList.remove('open');
+  }
+
+  function handleClickOutside(e) {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  }
+
   function showImage(el) {
     if (!el) {
       // safety net
@@ -155,13 +165,15 @@ function Gallery(gallery) {
     modal.querySelector('figure p').textContent = el.dataset.description;
     currentImage = el;
     openModal();
-  }
+  } // All event listeners
+
 
   images.forEach(function (image) {
     return image.addEventListener('click', function (e) {
       return showImage(e.currentTarget);
     });
   });
+  modal.addEventListener('click', handleClickOutside);
 }
 
 var gallery1 = Gallery(document.querySelector('.gallery1'));
