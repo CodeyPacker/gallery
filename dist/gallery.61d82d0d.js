@@ -194,6 +194,13 @@ function Gallery(gallery) {
       return showImage(e.currentTarget);
     });
   });
+  images.forEach(function (image) {
+    image.addEventListener('keyup', function (e) {
+      if (e.key === 'Enter') {
+        showImage(e.currentTarget);
+      }
+    });
+  });
   modal.addEventListener('click', handleClickOutside);
 }
 

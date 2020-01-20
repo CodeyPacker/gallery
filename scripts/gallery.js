@@ -72,6 +72,15 @@ function Gallery(gallery) {
 
   // All event listeners
   images.forEach(image => image.addEventListener('click', e => showImage(e.currentTarget)));
+
+  images.forEach(image => {
+    image.addEventListener('keyup', e => {
+      if(e.key === 'Enter') {
+        showImage(e.currentTarget);
+      }
+    });
+  });
+
   modal.addEventListener('click', handleClickOutside);
 }
 
