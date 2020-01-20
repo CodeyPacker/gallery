@@ -158,7 +158,10 @@ function Gallery(gallery) {
   }
 
   function handleKeyUp(e) {
-    if (e.key === 'Escape') closeModal();
+    // adding a return prevents the function from checking each key
+    if (e.key === 'Escape') return closeModal();
+    if (e.key === 'ArrowRight') return showNextImage();
+    if (e.key === 'ArrowLeft') return showPrevImage();
   }
 
   function showNextImage() {
