@@ -3,87 +3,94 @@ function Gallery(gallery) {
     throw new Error('Gallery not found!');
   }
 
+  this.gallery = gallery;
+
   // select the elements we need
-  const images = Array.from(gallery.querySelectorAll('img'));
-  const modal = document.querySelector('.modal');
-  const prevButton = modal.querySelector('.prev');
-  const nextButton = modal.querySelector('.next');
-  let currentImage;
+  this.images = Array.from(gallery.querySelectorAll('img'));
+  this.modal = document.querySelector('.modal');
+  this.prevButton = this.modal.querySelector('.prev');
+  this.nextButton = this.modal.querySelector('.next');
 
-  function openModal() {
-    // first check if modal is already open
-    if (modal.matches('.open')) {
-      return; // stop function from running
-    }
-
-    modal.classList.add('open');
-
-    // Event listeners to be bound when modal is opened
-    window.addEventListener('keyup', handleKeyUp);
-    nextButton.addEventListener('click', showNextImage);
-    prevButton.addEventListener('click', showPrevImage);
-  }
-
-  function closeModal() {
-    modal.classList.remove('open');
-    // cleanup listeners. these only need to exist when a modal is open
-    window.removeEventListener('keyup', handleKeyUp);
-    nextButton.removeEventListener('click', showNextImage);
-    prevButton.removeEventListener('click', showPrevImage);
-  }
-
-  function handleClickOutside(e) {
-    if (e.target === e.currentTarget) {
-      closeModal();
-    }
-  }
-
-  function handleKeyUp(e) {
-    // adding a return prevents the function from checking each key
-    if (e.key === 'Escape') return closeModal();
-    if (e.key === 'ArrowRight') return showNextImage();
-    if (e.key === 'ArrowLeft') return showPrevImage();
-  }
-
-  function showNextImage() {
-    // If there are no more images, go back to the first image
-    showImage(currentImage.nextElementSibling ||
-      gallery.firstElementChild);
-  }
-
-  function showPrevImage() {
-    showImage(currentImage.previousElementSibling ||
-      gallery.lastElementChild);
-  }
-
-  function showImage(el) {
-    if (!el) { // safety net
-      console.info('no image to show');
-      return;
-    }
-
-    // update the modal with this info
-    modal.querySelector('img').src = el.src;
-    modal.querySelector('h2').textContent = el.title;
-    modal.querySelector('figure p').textContent = el.dataset.description;
-    currentImage = el;
-    openModal();
-  }
+  // Bind the methods to the instance when we need them
+  // These need to have access to 'this'
+  this.showNextImage = this.showNextImage.bind(this);
+  this.showPrevImage = this.showPrevImage.bind(this);
+  this.handleKeyUp = this.handleKeyUp.bind(this);
+  this.handleClickOutside = this.handleClickOutside.bind(this);
 
   // All event listeners
-  images.forEach(image => image.addEventListener('click', e => showImage(e.currentTarget)));
+  this.images.forEach(image => image.addEventListener('click', e => this.showImage(e.currentTarget)));
 
-  images.forEach(image => {
+  this.images.forEach(image => {
     image.addEventListener('keyup', e => {
       if(e.key === 'Enter') {
-        showImage(e.currentTarget);
+        this.showImage(e.currentTarget);
       }
     });
   });
 
-  modal.addEventListener('click', handleClickOutside);
+  this.modal.addEventListener('click', this.handleClickOutside);
 }
 
+Gallery.prototype.openModal = function() {
+  // first check if modal is already open
+  if (this.modal.matches('.open')) {
+    return; // stop function from running
+  }
 
-const gallery1 = Gallery(document.querySelector('.gallery1'));
-const gallery2 = Gallery(document.querySelector('.gallery2'));
+  this.modal.classList.add('open');
+
+  // Event listeners to be bound when modal is opened
+  window.addEventListener('keyup', this.handleKeyUp);
+  this.nextButton.addEventListener('click', this.showNextImage);
+  this.prevButton.addEventListener('click', this.showPrevImage);
+}
+
+Gallery.prototype.closeModal = function() {
+  this.modal.classList.remove('open');
+  // cleanup listeners. these only need to exist when a modal is open
+  window.removeEventListener('keyup', this.handleKeyUp);
+  this.nextButton.removeEventListener('click', this.showNextImage);
+  this.prevButton.removeEventListener('click', this.showPrevImage);
+}
+
+Gallery.prototype.handleClickOutside = function(e) {
+  if (e.target === e.currentTarget) {
+    this.closeModal();
+  }
+}
+
+Gallery.prototype.handleKeyUp = function(e) {
+  // adding a return prevents the function from checking each key
+  if (e.key === 'Escape') return this.closeModal();
+  if (e.key === 'ArrowRight') return this.showNextImage();
+  if (e.key === 'ArrowLeft') return this.showPrevImage();
+}
+
+Gallery.prototype.showNextImage = function() {
+  // If there are no more images, go back to the first image
+  this.showImage(this.currentImage.nextElementSibling ||
+    this.gallery.firstElementChild);
+}
+
+Gallery.prototype.showPrevImage = function() {
+  this.showImage(this.currentImage.previousElementSibling ||
+    this.gallery.lastElementChild);
+}
+
+Gallery.prototype.showImage = function(el) {
+  if (!el) { // safety net
+    console.info('no image to show');
+    return;
+  }
+
+  // update the modal with this info
+  this.modal.querySelector('img').src = el.src;
+  this.modal.querySelector('h2').textContent = el.title;
+  this.modal.querySelector('figure p').textContent = el.dataset.description;
+  this.currentImage = el;
+  this.openModal();
+}
+
+const gallery1 = new Gallery(document.querySelector('.gallery1'));
+const gallery2 = new Gallery(document.querySelector('.gallery2'));
