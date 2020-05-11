@@ -117,103 +117,79 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"scripts/gallery.js":[function(require,module,exports) {
-function Gallery(gallery) {
-  var _this = this;
+})({"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
 
-  if (!gallery) {
-    throw new Error('Gallery not found!');
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
   }
 
-  this.gallery = gallery; // select the elements I need
-
-  this.images = Array.from(gallery.querySelectorAll('img'));
-  this.modal = document.querySelector('.modal');
-  this.prevButton = this.modal.querySelector('.prev');
-  this.nextButton = this.modal.querySelector('.next'); // Bind the methods to the instance when I need them
-  // These need to have access to 'this'
-
-  this.showNextImage = this.showNextImage.bind(this);
-  this.showPrevImage = this.showPrevImage.bind(this);
-  this.handleKeyUp = this.handleKeyUp.bind(this);
-  this.handleClickOutside = this.handleClickOutside.bind(this); // All event listeners
-
-  this.images.forEach(function (image) {
-    return image.addEventListener('click', function (e) {
-      return _this.showImage(e.currentTarget);
-    });
-  });
-  this.images.forEach(function (image) {
-    image.addEventListener('keyup', function (e) {
-      if (e.key === 'Enter') {
-        _this.showImage(e.currentTarget);
-      }
-    });
-  });
-  this.modal.addEventListener('click', this.handleClickOutside);
+  return bundleURL;
 }
 
-Gallery.prototype.openModal = function () {
-  // first check if modal is already open
-  if (this.modal.matches('.open')) {
-    return; // stop function from running
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
   }
 
-  this.modal.classList.add('open'); // Event listeners to be bound when modal is opened
+  return '/';
+}
 
-  window.addEventListener('keyup', this.handleKeyUp);
-  this.nextButton.addEventListener('click', this.showNextImage);
-  this.prevButton.addEventListener('click', this.showPrevImage);
-};
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
 
-Gallery.prototype.closeModal = function () {
-  this.modal.classList.remove('open'); // cleanup listeners. these only need to exist when a modal is open
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
 
-  window.removeEventListener('keyup', this.handleKeyUp);
-  this.nextButton.removeEventListener('click', this.showNextImage);
-  this.prevButton.removeEventListener('click', this.showPrevImage);
-};
+function updateLink(link) {
+  var newLink = link.cloneNode();
 
-Gallery.prototype.handleClickOutside = function (e) {
-  if (e.target === e.currentTarget) {
-    this.closeModal();
-  }
-};
+  newLink.onload = function () {
+    link.remove();
+  };
 
-Gallery.prototype.handleKeyUp = function (e) {
-  // adding a return prevents the function from checking each key
-  if (e.key === 'Escape') return this.closeModal();
-  if (e.key === 'ArrowRight') return this.showNextImage();
-  if (e.key === 'ArrowLeft') return this.showPrevImage();
-};
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
 
-Gallery.prototype.showNextImage = function () {
-  // If there are no more images, go back to the first image
-  this.showImage(this.currentImage.nextElementSibling || this.gallery.firstElementChild);
-};
+var cssTimeout = null;
 
-Gallery.prototype.showPrevImage = function () {
-  this.showImage(this.currentImage.previousElementSibling || this.gallery.lastElementChild);
-};
-
-Gallery.prototype.showImage = function (el) {
-  if (!el) {
-    // safety net
-    console.info('no image to show');
+function reloadCSS() {
+  if (cssTimeout) {
     return;
-  } // update the modal with this info
+  }
 
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
 
-  this.modal.querySelector('img').src = el.src;
-  this.modal.querySelector('h2').textContent = el.title;
-  this.modal.querySelector('figure p').textContent = el.dataset.description;
-  this.currentImage = el;
-  this.openModal();
-};
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
 
-var gallery1 = new Gallery(document.querySelector('.gallery1'));
-var gallery2 = new Gallery(document.querySelector('.gallery2'));
-},{}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"dist/gallery.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -417,5 +393,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/gallery.js"], null)
-//# sourceMappingURL=/gallery.61d82d0d.js.map
+},{}]},{},["../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
+//# sourceMappingURL=/gallery.7beb8fb7.js.map

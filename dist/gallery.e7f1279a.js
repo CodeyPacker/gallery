@@ -117,102 +117,100 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"scripts/gallery.js":[function(require,module,exports) {
-function Gallery(gallery) {
-  var _this = this;
+})({"dist/gallery.js":[function(require,module,exports) {
+var define;
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-  if (!gallery) {
-    throw new Error('Gallery not found!');
-  }
+parcelRequire = function (e, r, t, n) {
+  var i,
+      o = "function" == typeof parcelRequire && parcelRequire,
+      u = "function" == typeof require && require;
 
-  this.gallery = gallery; // select the elements I need
-
-  this.images = Array.from(gallery.querySelectorAll('img'));
-  this.modal = document.querySelector('.modal');
-  this.prevButton = this.modal.querySelector('.prev');
-  this.nextButton = this.modal.querySelector('.next'); // Bind the methods to the instance when I need them
-  // These need to have access to 'this'
-
-  this.showNextImage = this.showNextImage.bind(this);
-  this.showPrevImage = this.showPrevImage.bind(this);
-  this.handleKeyUp = this.handleKeyUp.bind(this);
-  this.handleClickOutside = this.handleClickOutside.bind(this); // All event listeners
-
-  this.images.forEach(function (image) {
-    return image.addEventListener('click', function (e) {
-      return _this.showImage(e.currentTarget);
-    });
-  });
-  this.images.forEach(function (image) {
-    image.addEventListener('keyup', function (e) {
-      if (e.key === 'Enter') {
-        _this.showImage(e.currentTarget);
+  function f(t, n) {
+    if (!r[t]) {
+      if (!e[t]) {
+        var i = "function" == typeof parcelRequire && parcelRequire;
+        if (!n && i) return i(t, !0);
+        if (o) return o(t, !0);
+        if (u && "string" == typeof t) return u(t);
+        var c = new Error("Cannot find module '" + t + "'");
+        throw c.code = "MODULE_NOT_FOUND", c;
       }
-    });
-  });
-  this.modal.addEventListener('click', this.handleClickOutside);
-}
 
-Gallery.prototype.openModal = function () {
-  // first check if modal is already open
-  if (this.modal.matches('.open')) {
-    return; // stop function from running
+      p.resolve = function (r) {
+        return e[t][1][r] || r;
+      }, p.cache = {};
+      var l = r[t] = new f.Module(t);
+      e[t][0].call(l.exports, p, l, l.exports, this);
+    }
+
+    return r[t].exports;
+
+    function p(e) {
+      return f(p.resolve(e));
+    }
   }
 
-  this.modal.classList.add('open'); // Event listeners to be bound when modal is opened
+  f.isParcelRequire = !0, f.Module = function (e) {
+    this.id = e, this.bundle = f, this.exports = {};
+  }, f.modules = e, f.cache = r, f.parent = o, f.register = function (r, t) {
+    e[r] = [function (e, r) {
+      r.exports = t;
+    }, {}];
+  };
 
-  window.addEventListener('keyup', this.handleKeyUp);
-  this.nextButton.addEventListener('click', this.showNextImage);
-  this.prevButton.addEventListener('click', this.showPrevImage);
-};
-
-Gallery.prototype.closeModal = function () {
-  this.modal.classList.remove('open'); // cleanup listeners. these only need to exist when a modal is open
-
-  window.removeEventListener('keyup', this.handleKeyUp);
-  this.nextButton.removeEventListener('click', this.showNextImage);
-  this.prevButton.removeEventListener('click', this.showPrevImage);
-};
-
-Gallery.prototype.handleClickOutside = function (e) {
-  if (e.target === e.currentTarget) {
-    this.closeModal();
+  for (var c = 0; c < t.length; c++) {
+    try {
+      f(t[c]);
+    } catch (e) {
+      i || (i = e);
+    }
   }
-};
 
-Gallery.prototype.handleKeyUp = function (e) {
-  // adding a return prevents the function from checking each key
-  if (e.key === 'Escape') return this.closeModal();
-  if (e.key === 'ArrowRight') return this.showNextImage();
-  if (e.key === 'ArrowLeft') return this.showPrevImage();
-};
+  if (t.length) {
+    var l = f(t[t.length - 1]);
+    "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "undefined" != typeof module ? module.exports = l : "function" == typeof define && define.amd ? define(function () {
+      return l;
+    }) : n && (this[n] = l);
+  }
 
-Gallery.prototype.showNextImage = function () {
-  // If there are no more images, go back to the first image
-  this.showImage(this.currentImage.nextElementSibling || this.gallery.firstElementChild);
-};
+  if (parcelRequire = f, i) throw i;
+  return f;
+}({
+  "MxBI": [function (require, module, exports) {
+    function e(e) {
+      var t = this;
+      if (!e) throw new Error("Gallery not found!");
+      this.gallery = e, this.images = Array.from(e.querySelectorAll("img")), this.modal = document.querySelector(".modal"), this.prevButton = this.modal.querySelector(".prev"), this.nextButton = this.modal.querySelector(".next"), this.showNextImage = this.showNextImage.bind(this), this.showPrevImage = this.showPrevImage.bind(this), this.handleKeyUp = this.handleKeyUp.bind(this), this.handleClickOutside = this.handleClickOutside.bind(this), this.images.forEach(function (e) {
+        return e.addEventListener("click", function (e) {
+          return t.showImage(e.currentTarget);
+        });
+      }), this.images.forEach(function (e) {
+        e.addEventListener("keyup", function (e) {
+          "Enter" === e.key && t.showImage(e.currentTarget);
+        });
+      }), this.modal.addEventListener("click", this.handleClickOutside);
+    }
 
-Gallery.prototype.showPrevImage = function () {
-  this.showImage(this.currentImage.previousElementSibling || this.gallery.lastElementChild);
-};
-
-Gallery.prototype.showImage = function (el) {
-  if (!el) {
-    // safety net
-    console.info('no image to show');
-    return;
-  } // update the modal with this info
-
-
-  this.modal.querySelector('img').src = el.src;
-  this.modal.querySelector('h2').textContent = el.title;
-  this.modal.querySelector('figure p').textContent = el.dataset.description;
-  this.currentImage = el;
-  this.openModal();
-};
-
-var gallery1 = new Gallery(document.querySelector('.gallery1'));
-var gallery2 = new Gallery(document.querySelector('.gallery2'));
+    e.prototype.openModal = function () {
+      this.modal.matches(".open") || (this.modal.classList.add("open"), window.addEventListener("keyup", this.handleKeyUp), this.nextButton.addEventListener("click", this.showNextImage), this.prevButton.addEventListener("click", this.showPrevImage));
+    }, e.prototype.closeModal = function () {
+      this.modal.classList.remove("open"), window.removeEventListener("keyup", this.handleKeyUp), this.nextButton.removeEventListener("click", this.showNextImage), this.prevButton.removeEventListener("click", this.showPrevImage);
+    }, e.prototype.handleClickOutside = function (e) {
+      e.target === e.currentTarget && this.closeModal();
+    }, e.prototype.handleKeyUp = function (e) {
+      return "Escape" === e.key ? this.closeModal() : "ArrowRight" === e.key ? this.showNextImage() : "ArrowLeft" === e.key ? this.showPrevImage() : void 0;
+    }, e.prototype.showNextImage = function () {
+      this.showImage(this.currentImage.nextElementSibling || this.gallery.firstElementChild);
+    }, e.prototype.showPrevImage = function () {
+      this.showImage(this.currentImage.previousElementSibling || this.gallery.lastElementChild);
+    }, e.prototype.showImage = function (e) {
+      e ? (this.modal.querySelector("img").src = e.src, this.modal.querySelector("h2").textContent = e.title, this.modal.querySelector("figure p").textContent = e.dataset.description, this.currentImage = e, this.openModal()) : console.info("no image to show");
+    };
+    var t = new e(document.querySelector(".gallery1")),
+        i = new e(document.querySelector(".gallery2"));
+  }, {}]
+}, {}, ["MxBI"], null);
 },{}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -417,5 +415,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/gallery.js"], null)
-//# sourceMappingURL=/gallery.61d82d0d.js.map
+},{}]},{},["../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","dist/gallery.js"], null)
+//# sourceMappingURL=/gallery.e7f1279a.js.map
