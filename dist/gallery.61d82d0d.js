@@ -125,12 +125,12 @@ function Gallery(gallery) {
     throw new Error('Gallery not found!');
   }
 
-  this.gallery = gallery; // select the elements we need
+  this.gallery = gallery; // select the elements I need
 
   this.images = Array.from(gallery.querySelectorAll('img'));
   this.modal = document.querySelector('.modal');
   this.prevButton = this.modal.querySelector('.prev');
-  this.nextButton = this.modal.querySelector('.next'); // Bind the methods to the instance when we need them
+  this.nextButton = this.modal.querySelector('.next'); // Bind the methods to the instance when I need them
   // These need to have access to 'this'
 
   this.showNextImage = this.showNextImage.bind(this);
@@ -241,7 +241,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62155" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55186" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -70,5 +70,8 @@
 .modal.open .modalInner {
   transform: translateY(0); }
 
+.text-center {
+  text-align: center; }
+
 
 /*# sourceMappingURL=/gallery.48e0ad0e.css.map */

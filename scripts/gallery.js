@@ -5,13 +5,13 @@ function Gallery(gallery) {
 
   this.gallery = gallery;
 
-  // select the elements we need
+  // select the elements I need
   this.images = Array.from(gallery.querySelectorAll('img'));
   this.modal = document.querySelector('.modal');
   this.prevButton = this.modal.querySelector('.prev');
   this.nextButton = this.modal.querySelector('.next');
 
-  // Bind the methods to the instance when we need them
+  // Bind the methods to the instance when I need them
   // These need to have access to 'this'
   this.showNextImage = this.showNextImage.bind(this);
   this.showPrevImage = this.showPrevImage.bind(this);
