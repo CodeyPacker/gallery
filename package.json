@@ -10,6 +10,7 @@
     "build": "parcel build index.html"
   },
   "devDependencies": {
-    "parcel": "^2.0.0-alpha.3.2"
+    "parcel": "^2.0.0-alpha.3.2",
+    "sass": "^1.26.5"
   }
 }
