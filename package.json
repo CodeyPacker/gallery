@@ -1,7 +1,7 @@
 {
   "name": "gallery",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.html",
   "repository": "git@github.com:CodeyPacker/gallery.git",
   "author": "CodeyPacker <codeypacker@gmail.com>",
   "license": "MIT",
